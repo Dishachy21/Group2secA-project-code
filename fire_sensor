@@ -1,0 +1,43 @@
+int ir=7;
+
+int flameornot;
+int led=8;
+int buzz=9;
+int trigPin = 11;
+int echoPin = 10;
+const int relayinputforpump=4;
+void setup() {
+  pinMode(ir,INPUT);
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+    pinMode(relayinputforpump,OUTPUT);
+}
+
+void loop() {
+    long duration, distance;
+  digitalWrite(trigPin,HIGH);
+  delayMicroseconds(1000);
+  digitalWrite(trigPin, LOW);
+  duration=pulseIn(echoPin, HIGH);
+  distance =(duration/2)/29.1;
+  Serial.print(distance);
+  Serial.println("CM");
+  flameornot=digitalRead(ir);
+  Serial.println(flameornot);
+
+  if(flameornot==0 && (distance>=5))
+  {
+    digitalWrite(relayinputforpump,LOW);
+    digitalWrite(led,HIGH);
+    tone(buzz,100);
+   
+  }
+  else{
+    digitalWrite(relayinputforpump,HIGH);
+      digitalWrite(led,LOW);
+      noTone(buzz);
+ 
+  }
+}
+
